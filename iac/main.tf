@@ -146,6 +146,17 @@ resource "aws_iam_instance_profile" "kafka_profile" {
   }
 }
 
+# EBS Volume for Kafka data
+resource "aws_ebs_volume" "kafka_data" {
+  availability_zone = data.aws_subnet.existing.availability_zone
+  size              = 50
+  type              = "gp3"
+
+  tags = {
+    Name = "kafka-data-volume"
+  }
+}
+
 # EC2 Instance in existing VPC
 resource "aws_instance" "kafka_instance" {
   ami                         = data.aws_ami.amazon_linux.id
@@ -156,9 +167,15 @@ resource "aws_instance" "kafka_instance" {
   iam_instance_profile        = aws_iam_instance_profile.kafka_profile.name
   associate_public_ip_address = true
 
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+  }
+
   user_data = templatefile("${path.module}/user_data.sh", {
     rds_secret_name = var.rds_secret_name
     aws_region      = var.aws_region
+    kafka_device    = "/dev/xvdf"
   })
 
   tags = {
@@ -174,6 +191,13 @@ resource "aws_instance" "kafka_instance" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+# Attach EBS volume to EC2 instance
+resource "aws_volume_attachment" "kafka_data_attachment" {
+  device_name = "/dev/xvdf"
+  volume_id   = aws_ebs_volume.kafka_data.id
+  instance_id = aws_instance.kafka_instance.id
 }
 
 # Data sources

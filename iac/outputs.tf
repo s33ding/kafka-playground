@@ -13,6 +13,11 @@ output "kafka_instance_private_dns" {
   value       = aws_instance.kafka_instance.private_dns
 }
 
+output "kafka_instance_public_ip" {
+  description = "Public IP of Kafka EC2 instance"
+  value       = aws_instance.kafka_instance.public_ip
+}
+
 output "rds_endpoint" {
   description = "RDS instance endpoint (existing)"
   value       = data.aws_db_instance.existing_rds.endpoint

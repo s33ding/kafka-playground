@@ -67,6 +67,13 @@ cat > /home/ec2-user/configure-debezium.sh << 'EOF'
 #!/bin/bash
 set -e
 
+# Format and mount Kafka data volume
+mkfs -t ext4 ${kafka_device}
+mkdir -p /opt/kafka-data
+mount ${kafka_device} /opt/kafka-data
+echo "${kafka_device} /opt/kafka-data ext4 defaults,nofail 0 2" >> /etc/fstab
+chown -R ec2-user:ec2-user /opt/kafka-data
+
 # Get RDS credentials from Secrets Manager
 SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${rds_secret_name} --region ${aws_region} --query SecretString --output text)
 
