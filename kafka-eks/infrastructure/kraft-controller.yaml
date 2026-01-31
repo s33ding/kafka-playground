@@ -1,0 +1,19 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KRaftController
+metadata:
+  name: kraftcontroller
+  namespace: default
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-server:7.4.0
+    init: confluentinc/confluent-init-container:2.6.0
+  dataVolumeCapacity: 10Gi
+  storageClass:
+    name: gp3
+  podTemplate:
+    tolerations:
+    - key: "kafka"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"

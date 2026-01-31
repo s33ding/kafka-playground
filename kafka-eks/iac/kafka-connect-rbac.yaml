@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kafka-connect-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::248189947068:role/KafkaConnectS3Role
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: Role
+metadata:
+  name: kafka-connect-s3-role
+spec:
+  forProvider:
+    assumeRolePolicy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Federated": "arn:aws:iam::248189947068:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/YOUR_CLUSTER_ID"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+              "StringEquals": {
+                "oidc.eks.us-east-1.amazonaws.com/id/YOUR_CLUSTER_ID:sub": "system:serviceaccount:default:kafka-connect-sa"
+              }
+            }
+          }
+        ]
+      }
+---
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: RolePolicyAttachment
+metadata:
+  name: kafka-connect-s3-policy-attachment
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::248189947068:policy/KafkaS3AccessPolicy
+    roleRef:
+      name: kafka-connect-s3-role

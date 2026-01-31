@@ -1,0 +1,72 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: kafka-connect-proper
+spec:
+  replicas: 1
+  image:
+    application: 248189947068.dkr.ecr.us-east-1.amazonaws.com/kafka-connect-debezium:latest
+    init: confluentinc/confluent-init-container:2.6.0
+  configOverrides:
+    server:
+      - config.storage.replication.factor=1
+      - offset.storage.replication.factor=1
+      - status.storage.replication.factor=1
+      - plugin.path=/usr/share/java,/usr/share/confluent-hub-components
+      - group.id=default.kafka-connect-proper
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka-brokers:9092
+  podTemplate:
+    serviceAccountName: kafka-connect-sa
+    tolerations:
+    - key: "kafka"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: connector-configs
+data:
+  postgres-source.json: |
+    {
+      "name": "postgres-source-connector",
+      "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "database.hostname": "postgres-service",
+        "database.port": "5432",
+        "database.user": "postgres",
+        "database.password": "postgres",
+        "database.dbname": "testdb",
+        "database.server.name": "postgres-server",
+        "table.include.list": "public.users,public.orders",
+        "plugin.name": "pgoutput",
+        "slot.name": "debezium_slot",
+        "publication.name": "debezium_publication",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter.schemas.enable": "false"
+      }
+    }
+  s3-sink-connector.json: |
+    {
+      "name": "s3-sink-connector",
+      "config": {
+        "connector.class": "io.confluent.connect.s3.S3SinkConnector",
+        "tasks.max": "1",
+        "topics": "postgres-server.public.users,postgres-server.public.orders",
+        "s3.bucket.name": "kafka-data-lake-248189947068",
+        "s3.region": "us-east-1",
+        "flush.size": "3",
+        "storage.class": "io.confluent.connect.s3.storage.S3Storage",
+        "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
+        "partitioner.class": "io.confluent.connect.storage.partitioner.DefaultPartitioner",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter.schemas.enable": "false"
+      }
+    }

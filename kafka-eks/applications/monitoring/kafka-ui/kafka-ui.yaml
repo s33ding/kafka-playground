@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  labels:
+    app: kafka-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+    spec:
+      tolerations:
+      - key: "kafka"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      nodeSelector:
+        role: "kafka"
+      containers:
+      - name: kafka-ui
+        image: provectuslabs/kafka-ui:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: KAFKA_CLUSTERS_0_NAME
+          value: "kafka-brokers"
+        - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+          value: "kafka-brokers:9092"
+        - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME
+          value: "kafka-connect"
+        - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS
+          value: "http://kafka-connect-proper:8083"
+        - name: SERVER_SERVLET_CONTEXT_PATH
+          value: "/kafka-ui"
+        - name: AUTH_TYPE
+          value: "LOGIN_FORM"
+        - name: SPRING_SECURITY_USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: kafka-ui-auth
+              key: username
+        - name: SPRING_SECURITY_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kafka-ui-auth
+              key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui
+spec:
+  selector:
+    app: kafka-ui
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP

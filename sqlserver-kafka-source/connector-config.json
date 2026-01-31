@@ -1,0 +1,20 @@
+{
+  "name": "sqlserver-source-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "sqlserver-service",
+    "database.port": "1433",
+    "database.user": "sa",
+    "database.password": "YourStrong@Passw0rd",
+    "database.names": "TestDB",
+    "database.server.name": "sqlserver",
+    "table.include.list": "kafka.mcdonalds_sales",
+    "database.history.kafka.bootstrap.servers": "kafka-cluster-kafka-bootstrap:9092",
+    "database.history.kafka.topic": "schema-changes.sqlserver",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false",
+    "topic.prefix": "sqlserver"
+  }
+}

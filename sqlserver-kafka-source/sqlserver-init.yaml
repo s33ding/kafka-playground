@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sqlserver-init-script
+  namespace: default
+data:
+  init.sql: |
+    CREATE DATABASE TestDB;
+    GO
+    USE TestDB;
+    GO
+    CREATE SCHEMA kafka;
+    GO
+    CREATE TABLE kafka.mcdonalds_sales (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        store_id INT NOT NULL,
+        store_name NVARCHAR(100) NOT NULL,
+        transaction_id NVARCHAR(50) NOT NULL,
+        product_code NVARCHAR(20) NOT NULL,
+        product_name NVARCHAR(100) NOT NULL,
+        category NVARCHAR(50) NOT NULL,
+        quantity INT NOT NULL,
+        unit_price DECIMAL(10,2) NOT NULL,
+        total_amount DECIMAL(10,2) NOT NULL,
+        payment_method NVARCHAR(20) NOT NULL,
+        region NVARCHAR(50) NOT NULL,
+        city NVARCHAR(50) NOT NULL,
+        created_at DATETIME2 DEFAULT GETDATE()
+    );
+    GO
+    INSERT INTO kafka.mcdonalds_sales 
+    (store_id, store_name, transaction_id, product_code, product_name, category, quantity, unit_price, total_amount, payment_method, region, city) 
+    VALUES 
+    (1, 'McDonald''s Store 1', 'TXN_12345678', 'BIG001', 'Big Mac', 'Burgers', 2, 15.90, 31.80, 'credit_card', 'Southeast', 'São Paulo'),
+    (2, 'McDonald''s Store 2', 'TXN_87654321', 'NUG001', 'McNuggets 10un', 'Chicken', 1, 16.90, 16.90, 'pix', 'Northeast', 'Recife');
+    GO

@@ -1,0 +1,25 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka-brokers
+  namespace: default
+spec:
+  replicas: 3
+  image:
+    application: confluentinc/cp-server:7.4.0
+    init: confluentinc/confluent-init-container:2.6.0
+  dataVolumeCapacity: 10Gi
+  configOverrides:
+    server:
+      - min.insync.replicas=1
+      - offsets.topic.replication.factor=1
+      - transaction.state.log.replication.factor=1
+      - transaction.state.log.min.isr=1
+  metricReporter:
+    enabled: true
+  podTemplate:
+    tolerations:
+    - key: "kafka"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"

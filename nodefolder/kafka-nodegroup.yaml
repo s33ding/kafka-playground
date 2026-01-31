@@ -1,0 +1,36 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: sas-6881323-eks
+  region: sa-east-1
+
+vpc:
+  id: vpc-016e73ac906d31d5c
+  securityGroup: sg-077da9170b01512ba
+  subnets:
+    private:
+      sa-east-1a: { id: subnet-08237a120e64c8475 }
+      sa-east-1b: { id: subnet-04b49cdc1cc7a2fda }
+
+managedNodeGroups:
+  - name: kafka-managed-nodes
+    instanceType: m5.2xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 1
+    volumeSize: 100
+    volumeType: gp3
+    privateNetworking: true
+    subnets:
+      - subnet-08237a120e64c8475
+      - subnet-04b49cdc1cc7a2fda
+    labels:
+      role: kafka
+    taints:
+      - key: kafka
+        value: "true"
+        effect: NoSchedule
+    tags:
+      Environment: playground
+      Component: kafka
