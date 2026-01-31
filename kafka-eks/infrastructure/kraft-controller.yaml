@@ -2,7 +2,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: KRaftController
 metadata:
   name: kraftcontroller
-  namespace: default
+  namespace: kafka
 spec:
   replicas: 1
   image:

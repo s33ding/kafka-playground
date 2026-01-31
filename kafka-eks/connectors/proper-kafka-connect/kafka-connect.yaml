@@ -2,6 +2,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
   name: kafka-connect-proper
+  namespace: kafka
 spec:
   replicas: 1
   image:
@@ -29,6 +30,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: connector-configs
+  namespace: kafka
 data:
   postgres-source.json: |
     {

@@ -2,7 +2,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka-brokers
-  namespace: default
+  namespace: kafka
 spec:
   replicas: 3
   image:
