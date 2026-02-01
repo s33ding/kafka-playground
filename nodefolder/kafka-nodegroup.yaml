@@ -15,22 +15,25 @@ vpc:
 
 managedNodeGroups:
   - name: kafka-managed-nodes
-    instanceType: m5.2xlarge
-    desiredCapacity: 1
-    minSize: 1
-    maxSize: 1
-    volumeSize: 100
+    instanceTypes: ["m5.4xlarge", "m5a.4xlarge", "m4.4xlarge"]
+    spot: true
+    desiredCapacity: 3
+    minSize: 3
+    maxSize: 6
+    volumeSize: 500
     volumeType: gp3
     privateNetworking: true
     subnets:
       - subnet-08237a120e64c8475
       - subnet-04b49cdc1cc7a2fda
     labels:
-      role: lab
+      role: kafka
+      workload: streaming
     taints:
-      - key: lab
+      - key: kafka
         value: "true"
         effect: NoSchedule
     tags:
-      Environment: playground
-      Component: kafka
+      Environment: production
+      Component: kafka-cluster
+      Purpose: data-streaming
