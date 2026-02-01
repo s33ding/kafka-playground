@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka-playground-app
+  name: data-lab-app
   namespace: lab
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kafka-playground-app
+      app: data-lab-app
   template:
     metadata:
       labels:
-        app: kafka-playground-app
+        app: data-lab-app
     spec:
       tolerations:
       - key: "lab"
@@ -22,7 +22,7 @@ spec:
         role: "lab"
       containers:
       - name: app
-        image: 248189947068.dkr.ecr.sa-east-1.amazonaws.com/kafka-playground:latest
+        image: 248189947068.dkr.ecr.sa-east-1.amazonaws.com/flask:latest
         ports:
         - containerPort: 80
         env:
@@ -32,11 +32,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka-playground-service
+  name: data-lab-service
   namespace: lab
 spec:
   selector:
-    app: kafka-playground-app
+    app: data-lab-app
   ports:
   - port: 80
     targetPort: 80

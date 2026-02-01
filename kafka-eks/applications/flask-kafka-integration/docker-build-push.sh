@@ -3,7 +3,7 @@
 # Build and push to ECR
 REGION="sa-east-1"
 ACCOUNT_ID="248189947068"
-REPO_NAME="kafka-playground"
+REPO_NAME="flask"
 IMAGE_TAG="latest"
 
 # Check if user wants to rebuild

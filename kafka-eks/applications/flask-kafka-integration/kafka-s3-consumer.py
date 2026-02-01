@@ -6,7 +6,7 @@ import os
 
 # AWS S3 client
 s3_client = boto3.client('s3', region_name='sa-east-1')
-bucket_name = 'kafka-playground-sink-bucket'
+bucket_name = 's33ding-kafka-output'
 
 # Kafka consumer
 consumer = KafkaConsumer(

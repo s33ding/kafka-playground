@@ -11,8 +11,8 @@ kubectl exec -it $(kubectl get pods -l app=kafka-connect -o jsonpath='{.items[0]
   curl -X DELETE http://localhost:8083/connectors/s3-sink-connector || true
 
 # Delete applications
-echo "🎮 Deleting playground app..."
-kubectl delete -f applications/kafka-playground-app/ || true
+echo "🎮 Deleting flask app..."
+kubectl delete -f applications/flask-kafka-integration/deployment.yaml || true
 
 # Delete monitoring
 echo "📊 Deleting Kafka UI..."

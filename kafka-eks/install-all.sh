@@ -61,11 +61,11 @@ kubectl exec -it $(kubectl get pods -l app=kafka-connect -o jsonpath='{.items[0]
   --data @/opt/kafka/config/s3-sink-connector.json \
   http://localhost:8083/connectors
 
-# Deploy playground app
-echo "🎮 Deploying playground app..."
-cd applications/kafka-playground-app
-./build-push.sh
-./deploy.sh
+# Deploy flask app
+echo "🎮 Deploying flask app..."
+cd applications/flask-kafka-integration
+./docker-build-push.sh
+kubectl apply -f deployment.yaml
 cd ../..
 
 # Deploy monitoring

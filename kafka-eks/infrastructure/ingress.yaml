@@ -27,7 +27,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: kafka-playground-service
+            name: data-lab-service
             port:
               number: 80
       - path: /grafana
@@ -41,6 +41,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: kafka-playground-service
+            name: data-lab-service
             port:
               number: 80

@@ -1,4 +1,4 @@
-# Kafka Playground - Production Data Streaming Platform
+# Data Lab - Production Data Streaming Platform
 
 Enterprise-grade Apache Kafka deployment examples and experiments with CDC, S3 integration, and monitoring.
 

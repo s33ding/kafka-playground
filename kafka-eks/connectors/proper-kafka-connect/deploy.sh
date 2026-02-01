@@ -16,4 +16,4 @@ kubectl exec -l app=kafka-connect-proper -- curl -X POST \
 echo ""
 echo "✅ Proper Kafka Connect with S3 sink deployed!"
 echo "Check connectors: kubectl exec -l app=kafka-connect-proper -- curl http://localhost:8083/connectors"
-echo "Check S3 bucket: aws s3 ls s3://kafka-playground-sink-bucket/kafka-data/ --recursive"
+echo "Check S3 bucket: aws s3 ls s3://s33ding-kafka-output/kafka-data/ --recursive"
