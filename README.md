@@ -55,11 +55,33 @@ OLTP Layer                 Streaming Layer              OLAP Layer
 
 ```
 data-lab/
-├── infrastructure/     # Kafka cluster & KRaft controller
-├── connectors/        # Kafka Connect & S3 sink
-├── applications/      # Sample apps & monitoring
-├── iac/              # IAM policies & roles
-└── scripts/          # Deployment automation
+├── eks/                           # EKS cluster & Kubernetes configs
+│   ├── iac/                      # IAM policies & roles
+│   │   ├── kafka-s3-policy.json
+│   │   ├── trust-policy.json
+│   │   └── setup-s3-permissions.sh
+│   ├── infrastructure/           # Kafka cluster components
+│   │   ├── kafka-brokers.yaml
+│   │   ├── kraft-controller.yaml
+│   │   └── ingress.yaml
+│   ├── connectors/               # Kafka Connect & CDC
+│   │   ├── configs/             # Connector configurations
+│   │   ├── proper-kafka-connect/ # Connect cluster setup
+│   │   └── deploy-connectors.sh
+│   ├── applications/             # Sample apps & monitoring
+│   │   ├── monitoring/          # Kafka UI, Grafana, Prometheus
+│   │   ├── flask-kafka-integration/
+│   │   └── postgres/
+│   ├── postgres/                 # PostgreSQL setup & testing
+│   │   ├── dataset/             # Sample data & scripts
+│   │   └── postgres-tests/      # Connection & query tests
+│   └── kafka-connect/           # Kafka utilities
+├── nodefolder/                   # Kafka cluster & KRaft nodes
+├── ingress/                      # Load balancer & routing
+├── s3/                          # S3 buckets & data lake setup
+├── athena/                      # Athena queries & Iceberg tables
+├── assets/                      # Documentation images
+└── README.md                    # Project documentation
 ```
 
 ## 🚀 Quick Deploy
