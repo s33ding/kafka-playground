@@ -23,6 +23,26 @@ OLTP Layer                 Streaming Layer              OLAP Layer
                                                        └──────────────┘
 ```
 
+### Kafka Infrastructure Components
+
+**Kafka Cluster (KRaft Mode)**
+- 3 broker nodes for high availability and fault tolerance
+- KRaft consensus protocol eliminates ZooKeeper dependency
+- Distributed across multiple availability zones
+- Isolated by security groups for network-level protection
+
+**Kafka Connect Platform**
+- Dedicated Connect cluster for scalable data integration
+- Debezium CDC connectors for real-time change capture
+- S3 sink connectors for data lake ingestion
+- Isolated connector workloads with resource management
+
+**Security & Isolation**
+- Security groups isolate Kafka infrastructure components
+- Network segmentation between OLTP, streaming, and OLAP layers
+- IAM roles and IRSA for secure AWS service integration
+- Node-level isolation for workload separation
+
 ## 🚀 Features
 
 - **High Availability**: 3-broker Kafka cluster with KRaft mode
