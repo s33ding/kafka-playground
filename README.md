@@ -115,3 +115,8 @@ open http://app.dataiesb.com/kafka-ui
 - AWS cloud integration (EKS, S3, IAM)
 - Infrastructure as Code
 - DevOps automation
+
+---
+
+**Powered by DataIESB** (AWS + IESB + Data Science Graduation)  
+🌐 [www.dataiesb.com](https://www.dataiesb.com)
