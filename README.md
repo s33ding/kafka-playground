@@ -1,5 +1,7 @@
 # Data Lab - Production Data Streaming Platform
 
+![Repository Image](assets/repo-img.png)
+
 Enterprise-grade Apache Kafka deployment examples and experiments with CDC, S3 integration, and monitoring.
 
 ## 🏗️ Architecture
