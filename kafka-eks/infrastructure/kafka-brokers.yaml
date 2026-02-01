@@ -2,7 +2,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka-brokers
-  namespace: kafka
+  namespace: lab
 spec:
   replicas: 3
   image:
@@ -19,7 +19,7 @@ spec:
     enabled: true
   podTemplate:
     tolerations:
-    - key: "kafka"
+    - key: "lab"
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"

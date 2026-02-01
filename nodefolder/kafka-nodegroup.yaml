@@ -26,9 +26,9 @@ managedNodeGroups:
       - subnet-08237a120e64c8475
       - subnet-04b49cdc1cc7a2fda
     labels:
-      role: kafka
+      role: lab
     taints:
-      - key: kafka
+      - key: lab
         value: "true"
         effect: NoSchedule
     tags:

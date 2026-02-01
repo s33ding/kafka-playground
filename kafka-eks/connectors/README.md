@@ -1,20 +1,19 @@
 # Kafka Connectors
 
-Kafka Connect deployment with custom image containing Debezium and S3 connectors.
+Organized connector configurations and deployment scripts.
 
-## Components
+## Structure
+```
+connectors/
+├── configs/
+│   ├── postgres-source-connector.json
+│   └── s3-sink-connector.json
+├── deploy-connectors.sh
+└── proper-kafka-connect/
+```
 
-- **proper-kafka-connect/**: Main Kafka Connect cluster
-- **s3-sink/**: S3 sink connector configuration
-
-## Custom Image
-
-Built with:
-- Debezium PostgreSQL Connector 2.4.0
-- Confluent S3 Sink Connector 10.5.0
-
-## Deploy
-
+## Usage
 ```bash
-kubectl apply -f connectors/proper-kafka-connect/
+cd connectors/
+./deploy-connectors.sh
 ```

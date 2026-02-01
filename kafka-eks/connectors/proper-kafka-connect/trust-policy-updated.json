@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::248189947068:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.us-east-1.amazonaws.com/id/:sub": "system:serviceaccount:lab:kafka-connect-sa",
+          "oidc.eks.us-east-1.amazonaws.com/id/:aud": "sts.amazonaws.com"
+        }
+      }
+    }
+  ]
+}

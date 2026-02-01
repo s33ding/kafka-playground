@@ -2,7 +2,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
   name: kafka-connect-proper
-  namespace: kafka
+  namespace: lab
 spec:
   replicas: 1
   image:
@@ -21,7 +21,7 @@ spec:
   podTemplate:
     serviceAccountName: kafka-connect-sa
     tolerations:
-    - key: "kafka"
+    - key: "lab"
       operator: "Equal"
       value: "true"
       effect: "NoSchedule"
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: connector-configs
-  namespace: kafka
+  namespace: lab
 data:
   postgres-source.json: |
     {

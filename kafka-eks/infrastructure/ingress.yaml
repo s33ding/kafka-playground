@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lab-ingress
+  namespace: lab
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/success-codes: 200,302,404
+    alb.ingress.kubernetes.io/conditions.lab: |
+      [{"field":"host-header","values":["lab.dataiesb.com"]}]
+spec:
+  ingressClassName: alb
+  rules:
+  - host: lab.dataiesb.com
+    http:
+      paths:
+      - path: /kafka
+        pathType: Prefix
+        backend:
+          service:
+            name: kafka-ui
+            port:
+              number: 80
+      - path: /messages
+        pathType: Prefix
+        backend:
+          service:
+            name: kafka-playground-service
+            port:
+              number: 80
+      - path: /grafana
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 3000
+      - path: /health
+        pathType: Prefix
+        backend:
+          service:
+            name: kafka-playground-service
+            port:
+              number: 80
