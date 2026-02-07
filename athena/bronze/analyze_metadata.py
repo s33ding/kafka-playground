@@ -11,6 +11,7 @@ def query_metadata(query, description):
     
     response = client.start_query_execution(
         QueryString=query,
+        QueryExecutionContext={'Database': 'bronze'},
         ResultConfiguration={'OutputLocation': 's3://s33ding-kafka-output/athena-results/'},
         WorkGroup='primary'
     )
@@ -32,12 +33,16 @@ def query_metadata(query, description):
                 else:
                     print("No data found")
             else:
-                print(f"❌ Query failed: {result['QueryExecution']['Status'].get('StateChangeReason', '')}")
+                reason = result['QueryExecution']['Status'].get('StateChangeReason', '')
+                if 'ICEBERG_MISSING_METADATA' in reason:
+                    print(f"⚠️  Table exists but has no Iceberg metadata (empty table or not yet populated)")
+                else:
+                    print(f"❌ Query failed: {reason}")
             break
         time.sleep(1)
 
 if __name__ == '__main__':
-    tables = ['mcdonalds_sales_bronze', 'mcdonalds_inventory_bronze', 'mcdonalds_employees_bronze']
+    tables = ['mcdonalds_sales', 'mcdonalds_inventory', 'mcdonalds_employees']
     
     for table in tables:
         # Snapshots
