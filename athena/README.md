@@ -1,16 +1,30 @@
 # Athena Data Pipeline
 
 ## Structure
-- `bronze/` - Raw data ingestion layer
-- `silver/` - Cleaned/processed data layer  
-- `pipeline/` - ETL scripts and transformations
-- `check.py` - Table verification
-- `apply.py` - Query execution
-- `drop_table.py` - Cleanup utilities
+```
+athena/
+├── bronze/
+│   ├── sales/          - McDonald's sales tables
+│   ├── inventory/      - McDonald's inventory tables
+│   └── employees/      - McDonald's employees tables
+├── silver/             - Cleaned/processed data layer  
+└── pipeline/           - ETL scripts and transformations
+```
 
 ## Usage
-1. Create bronze: `cd bronze && python create_bronze_table.py`
-2. Create silver: `cd silver && python create_table.py`
-3. Run pipeline: `cd pipeline && python cdc_bronze_pipeline.py`
-4. Check tables: `python check.py`
-5. Query data: `python apply.py`
+
+### Create Bronze Tables
+```bash
+cd bronze
+python create_all_tables.py
+```
+
+### Check Tables
+```bash
+python check_tables.py
+```
+
+### Query Data
+```bash
+python apply.py query_bronze.sql
+```
