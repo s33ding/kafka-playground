@@ -3,8 +3,13 @@ import time
 
 client = boto3.client('athena', region_name='us-east-1')
 
-with open('mcdonalds_sales_bronze.sql', 'r') as f:
-    query = f.read()
+query = """
+CREATE TABLE bronze.mcdonalds_sales_bronze (
+  payload string
+)
+LOCATION 's3://s33ding-kafka-output/db_bronze/mcdonalds_sales/'
+TBLPROPERTIES ('table_type'='ICEBERG')
+"""
 
 response = client.start_query_execution(
     QueryString=query,
@@ -13,12 +18,13 @@ response = client.start_query_execution(
 )
 
 query_id = response['QueryExecutionId']
-print(f"Query execution ID: {query_id}")
 
 while True:
     result = client.get_query_execution(QueryExecutionId=query_id)
     status = result['QueryExecution']['Status']['State']
     if status in ['SUCCEEDED', 'FAILED', 'CANCELLED']:
-        print(f"Final status: {status}")
+        print(f"Status: {status}")
+        if status == 'FAILED':
+            print(f"Error: {result['QueryExecution']['Status'].get('StateChangeReason', '')}")
         break
-    time.sleep(2)
+    time.sleep(1)

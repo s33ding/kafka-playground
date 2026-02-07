@@ -49,6 +49,8 @@ else:
 deploy_connector("configs/postgres-source-connector.json", "PostgreSQL Source Connector")
 time.sleep(2)
 deploy_connector("configs/s3-sink-connector.json", "S3 Sink Connector")
+time.sleep(2)
+deploy_connector("configs/bronze-iceberg-sink-connector.json", "Bronze Iceberg Sink Connector")
 
 # Check status
 time.sleep(2)

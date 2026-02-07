@@ -1,9 +1,3 @@
-CREATE TABLE mcdonalds_inventory_bronze (
-  op string,
-  ts_ms bigint,
-  before string,
-  after string,
-  record_hash string
-)
+CREATE TABLE mcdonalds_inventory
 LOCATION 's3://s33ding-kafka-output/db_bronze/mcdonalds_inventory/'
 TBLPROPERTIES ('table_type'='ICEBERG');

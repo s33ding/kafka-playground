@@ -4,13 +4,9 @@ import time
 
 client = boto3.client('athena', region_name='us-east-1')
 
-def run_query(sql_file, description):
-    with open(sql_file, 'r') as f:
-        query = f.read()
-    
-    print(f"\n=== {description} ===")
+def list_databases():
     response = client.start_query_execution(
-        QueryString=query,
+        QueryString='SHOW DATABASES',
         ResultConfiguration={'OutputLocation': 's3://s33ding-kafka-output/athena-results/'},
         WorkGroup='primary'
     )
@@ -24,20 +20,11 @@ def run_query(sql_file, description):
             if status == 'SUCCEEDED':
                 results = client.get_query_results(QueryExecutionId=query_id)
                 rows = results['ResultSet']['Rows']
-                columns = [col.get('VarCharValue', '') for col in rows[0]['Data']]
                 data = [[col.get('VarCharValue', '') for col in row['Data']] for row in rows[1:]]
-                df = pd.DataFrame(data, columns=columns)
-                print(df)
-            else:
-                print(f"Query failed: {result['QueryExecution']['Status'].get('StateChangeReason', '')}")
+                return pd.DataFrame(data, columns=['database'])
             break
         time.sleep(1)
 
-# Check tables
-queries = [
-    ('query_raw.sql', 'Raw Table Sample'),
-    ('query_bronze.sql', 'Bronze Table Sample')
-]
-
-for sql_file, description in queries:
-    run_query(sql_file, description)
+if __name__ == '__main__':
+    df = list_databases()
+    print(df)
