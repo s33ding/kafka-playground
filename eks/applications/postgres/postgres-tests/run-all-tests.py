@@ -9,8 +9,8 @@ if __name__ == "__main__":
     print("🧪 Running PostgreSQL Integration Tests...\n")
     
     tests = [
-        "test-connection.py",
-        "test-mcdonalds.py",
+        "check-connection.py",
+        "check-mcdonalds.py",
         "insert-mcdonalds-data.py",
         "query-mcdonalds.py"
     ]

@@ -3,9 +3,9 @@ set -e
 
 echo "🧪 Running PostgreSQL Integration Tests..."
 
-./test-connection.sh
+./check-connection.sh
 echo ""
-./test-mcdonalds.sh
+./check-mcdonalds.sh
 echo ""
 ./insert-mcdonalds-data.sh
 echo ""
