@@ -1,0 +1,12 @@
+{
+  "Rules": [
+    {
+      "ID": "athena-cleanup",
+      "Status": "Enabled",
+      "Prefix": "athena/",
+      "Expiration": {
+        "Days": 1
+      }
+    }
+  ]
+}

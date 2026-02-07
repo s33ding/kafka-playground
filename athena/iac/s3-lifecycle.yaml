@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: S3 Lifecycle Policy for Athena Query Results
+
+Resources:
+  AthenaS3Lifecycle:
+    Type: AWS::S3::BucketLifecycleConfiguration
+    Properties:
+      Bucket: s33ding-kafka-output
+      LifecycleConfiguration:
+        Rules:
+          - Id: athena-query-results
+            Status: Enabled
+            Prefix: athena/
+            Transitions:
+              - TransitionInDays: 30
+                StorageClass: INTELLIGENT_TIERING
+              - TransitionInDays: 90
+                StorageClass: GLACIER_IR
+            ExpirationInDays: 365
